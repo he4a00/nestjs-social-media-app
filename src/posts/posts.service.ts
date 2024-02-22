@@ -5,12 +5,14 @@ import { Model } from 'mongoose';
 import { PostDto } from './dto/post.dto';
 import { User } from 'src/users/schemas/users.schema';
 import { PaginationService } from 'src/utils/pagination';
+import { Comments } from 'src/comments/schemas/comment.schema';
 
 @Injectable()
 export class PostsService {
   constructor(
     @InjectModel(Post.name) private postModel: Model<Post>,
     @InjectModel(User.name) private userModel: Model<User>,
+    @InjectModel(Comments.name) private commentModel: Model<Comments>,
     private readonly paginationService: PaginationService,
   ) {}
 
@@ -81,6 +83,9 @@ export class PostsService {
         $pull: { posts: post._id },
       },
     );
+
+    // delete the comments in this post while deleting the post
+    await this.commentModel.deleteMany({ _id: { $in: post.comments } });
 
     return post;
   }

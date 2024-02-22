@@ -46,7 +46,7 @@ export class PostsController {
 
   @Patch('update/:id')
   @UseGuards(JwtAuthGurad)
-  updatePost(@Body() updatePostDto: PostDto, @Param('id') id: string) {
+  updatePost(@Param('id') id: string) {
     return this.postsService.updatePost(id);
   }
 }

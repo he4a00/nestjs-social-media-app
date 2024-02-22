@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
-// import { User } from 'src/users/schemas/users.schema';
+import { Comments } from 'src/comments/schemas/comment.schema';
+import { Likes } from 'src/likes/schemas/likes.schema';
 
 @Schema()
 export class Post extends Document {
@@ -9,6 +10,12 @@ export class Post extends Document {
 
   @Prop({ type: Types.ObjectId, required: true, ref: 'User' })
   author: string;
+
+  @Prop({ type: Types.ObjectId, ref: 'Comments' })
+  comments: Comments[];
+
+  @Prop({ type: Types.ObjectId, ref: 'Likes' })
+  likes: Likes[];
 }
 
 export const PostSchema = SchemaFactory.createForClass(Post);
